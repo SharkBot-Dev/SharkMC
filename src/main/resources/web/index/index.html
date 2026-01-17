@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <title>プラグインダッシュボード</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, Helvetica, sans-serif;
+            background-color: #f4f6f8;
+        }
+
+        .sidebar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 220px;
+            height: 100vh;
+            background-color: #1e1e2f;
+            color: #ffffff;
+            padding-top: 20px;
+        }
+
+        .sidebar h2 {
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 18px;
+        }
+
+        .menu a {
+            display: block;
+            padding: 12px 20px;
+            color: #cfd3ff;
+            text-decoration: none;
+            font-size: 14px;
+        }
+
+        .menu a:hover {
+            background-color: #2a2a40;
+            color: #ffffff;
+        }
+
+        .content {
+            margin-left: 220px;
+            padding: 20px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="sidebar" id="sidebar"></div>
+
+<div class="content">
+    <h1>プラグインへようこそ！</h1>
+    <p>左のメニューから操作を選択してください。</p>
+</div>
+
+</body>
+
+<script>
+    fetch("/sidebar.html")
+      .then(r => r.text())
+      .then(html => {
+          document.getElementById("sidebar").innerHTML = html;
+      });
+</script>
+
+</html>

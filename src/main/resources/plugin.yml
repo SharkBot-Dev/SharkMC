@@ -1,0 +1,4 @@
+name: webDashboardPlugin
+version: '1.0-SNAPSHOT'
+main: com.royumana.webDashboardPlugin.WebDashboardPlugin
+api-version: '1.21'

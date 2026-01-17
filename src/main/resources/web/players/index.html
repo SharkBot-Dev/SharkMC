@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <title>プラグインダッシュボード</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, Helvetica, sans-serif;
+            background-color: #f4f6f8;
+        }
+
+        .sidebar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 220px;
+            height: 100vh;
+            background-color: #1e1e2f;
+            color: #ffffff;
+            padding-top: 20px;
+        }
+
+        .sidebar h2 {
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 18px;
+        }
+
+        .menu a {
+            display: block;
+            padding: 12px 20px;
+            color: #cfd3ff;
+            text-decoration: none;
+            font-size: 14px;
+        }
+
+        .menu a:hover {
+            background-color: #2a2a40;
+            color: #ffffff;
+        }
+
+        .content {
+            margin-left: 220px;
+            padding: 20px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="sidebar" id="sidebar"></div>
+
+<div class="content">
+    <div id="players" class="page" style="display:none">
+        <div class="card">
+            <h3>オンラインプレイヤー</h3>
+
+            <button onclick="loadPlayers()">リロード</button><br>
+
+            <table width="100%" id="playerTable">
+                <thead>
+                <tr>
+                    <th align="left">名前</th>
+                    <th align="right">操作</th>
+                </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+</body>
+
+<script>
+    fetch("/sidebar.html")
+      .then(r => r.text())
+      .then(html => {
+          document.getElementById("sidebar").innerHTML = html;
+      });
+</script>
+
+<script>
+    function loadPlayers() {
+        fetch("/api/players")
+        .then(r => r.json())
+        .then(players => {
+            const tbody = document.querySelector("#playerTable tbody");
+            tbody.innerHTML = "";
+
+            players.forEach(name => {
+                const tr = document.createElement("tr");
+
+                const tdName = document.createElement("td");
+                tdName.innerText = name;
+
+                const tdAction = document.createElement("td");
+                tdAction.align = "right";
+
+                const btn = document.createElement("button");
+                btn.innerText = "Kick";
+                btn.onclick = () => kickPlayer(name);
+
+                tdAction.appendChild(btn);
+                tr.appendChild(tdName);
+                tr.appendChild(tdAction);
+                tbody.appendChild(tr);
+            });
+        });
+    }
+
+    function kickPlayer(name) {
+        if (!confirm(`${name} をKickしますか？`)) return;
+        var reason = prompt("理由を入力してください");
+        let reasons = reason ? reason: "理由なし"
+
+        fetch("/api/kick", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({ player: name, reason: reasons })
+        })
+        .then(r => {
+            if (r.ok) {
+                alert("Kickしました");
+                loadPlayers();
+            } else {
+                alert("失敗しました");
+            }
+        });
+    }
+
+    function show(id) {
+        document.querySelectorAll(".page").forEach(p => p.style.display = "none");
+        document.getElementById(id).style.display = "block";
+
+        document.querySelectorAll(".menu a").forEach(a => a.classList.remove("active"));
+
+        if (id === "players") loadPlayers();
+    }
+
+    show("players");
+</script>
+
+</html>
