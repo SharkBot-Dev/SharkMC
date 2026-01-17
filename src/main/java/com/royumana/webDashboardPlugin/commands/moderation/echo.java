@@ -17,8 +17,8 @@ public class echo {
         new register_command().registerCommand("echo", new Command("echo") {
             {
                 setDescription("サーバーに発言させます。");
-                setUsage("/echo [理由]");
-                setPermission("webDashboardPlugin.tools.echo_use");
+                setUsage("/echo [発言]");
+                setPermission("webDashboardPlugin.moderation.echo_use");
             }
 
             @Override
