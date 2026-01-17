@@ -33,7 +33,7 @@ public class echo {
                     return true;
                 }
 
-                String text = (args.length > 0) ? String.join(" ", args) : "なし";
+                String text = (args.length > 0) ? String.join(" ", args) : "発言";
 
                 sender.getServer().sendMessage(Component.text(text));
                 return true;

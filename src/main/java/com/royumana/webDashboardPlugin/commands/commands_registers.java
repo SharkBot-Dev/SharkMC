@@ -1,6 +1,7 @@
 package com.royumana.webDashboardPlugin.commands;
 
 import com.royumana.webDashboardPlugin.commands.moderation.echo;
+import com.royumana.webDashboardPlugin.commands.moderation.setnick;
 import com.royumana.webDashboardPlugin.commands.moderation.thunder;
 import com.royumana.webDashboardPlugin.commands.tools.afk;
 import com.royumana.webDashboardPlugin.lib.Database;
@@ -18,6 +19,7 @@ public class commands_registers {
         // モデレート
         new echo();
         new thunder();
+        new setnick();
 
         getLogger().info("コマンドを登録しました。");
     }
