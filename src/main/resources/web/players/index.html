@@ -44,6 +44,12 @@
             margin-left: 220px;
             padding: 20px;
         }
+
+        button {
+            background-color: black;
+            color: white;
+            border-radius: 20px;
+        }
     </style>
 </head>
 <body>
@@ -98,10 +104,16 @@
                 tdAction.align = "right";
 
                 const btn = document.createElement("button");
-                btn.innerText = "Kick";
+                btn.innerText = "キック";
                 btn.onclick = () => kickPlayer(name);
 
+                const thunder = document.createElement("button");
+                thunder.innerText = "雷";
+                thunder.onclick = () => thunderPlayer(name);
+
                 tdAction.appendChild(btn);
+                tdAction.appendChild(thunder);
+
                 tr.appendChild(tdName);
                 tr.appendChild(tdAction);
                 tbody.appendChild(tr);
@@ -124,6 +136,26 @@
         .then(r => {
             if (r.ok) {
                 alert("Kickしました");
+                loadPlayers();
+            } else {
+                alert("失敗しました");
+            }
+        });
+    }
+
+    function thunderPlayer(name) {
+        if (!confirm(`${name} に雷を落としますか？`)) return;
+
+        fetch("/api/thunder", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({ player: name })
+        })
+        .then(r => {
+            if (r.ok) {
+                alert("雷を落としました。");
                 loadPlayers();
             } else {
                 alert("失敗しました");
