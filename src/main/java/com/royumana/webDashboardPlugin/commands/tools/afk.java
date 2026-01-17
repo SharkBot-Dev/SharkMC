@@ -26,7 +26,7 @@ public class afk {
 
         new register_command().registerCommand("afk", new Command("afk") {
             {
-                setDescription("AFK状態を切り替えます。理由を設定することもできます。");
+                setDescription("AFK状態を切り替えます。");
                 setUsage("/afk [理由]");
                 setPermission("webDashboardPlugin.tools.afk_use");
             }
