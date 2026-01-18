@@ -2,6 +2,7 @@ package com.royumana.webDashboardPlugin.server;
 
 import com.royumana.webDashboardPlugin.server.routes.chat.chat;
 import com.royumana.webDashboardPlugin.server.routes.chat.getChatLogs;
+import com.royumana.webDashboardPlugin.server.routes.chat.send;
 import com.royumana.webDashboardPlugin.server.routes.error404;
 import com.royumana.webDashboardPlugin.server.routes.index;
 
@@ -35,6 +36,7 @@ public class server extends RouterNanoHTTPD {
         addRoute("/api/thunder", thunder.class, plugin);
         addRoute("/chat", chat.class);
         addRoute("/api/logs/chat", getChatLogs.class);
+        addRoute("/api/logs/chat/send", send.class);
         addRoute("/sidebar.html", sidebar.class);
 
         setNotFoundHandler(error404.class);

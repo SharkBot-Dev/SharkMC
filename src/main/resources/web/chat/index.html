@@ -91,6 +91,41 @@
     <div id="chat-container">
         <div class="chat-line">ログを読み込み中...</div>
     </div>
+
+    <div class="input-area" style="margin-top: 20px; display: flex; gap: 10px;">
+        <input type="text" id="message-input" placeholder="メッセージを入力..."
+               style="flex-grow: 1; padding: 10px; border-radius: 5px; border: 1px solid #ccc;">
+        <button onclick="sendMessage()"
+                style="padding: 10px 20px; background-color: #4e73df; color: white; border: none; border-radius: 5px; cursor: pointer;">
+            送信
+        </button>
+    </div>
+
+    <script>
+        async function sendMessage() {
+            const input = document.getElementById("message-input");
+            const msg = input.value;
+            if (!msg) return;
+
+            try {
+                const response = await fetch("/api/logs/chat/send", {
+                    method: "POST",
+                    body: msg
+                });
+
+                if (response.ok) {
+                    input.value = "";
+                    fetchChatLogs();
+                }
+            } catch (error) {
+                alert("送信に失敗しました。");
+            }
+        }
+
+        document.getElementById("message-input").addEventListener("keypress", (e) => {
+            if (e.key === "Enter") sendMessage();
+        });
+    </script>
 </div>
 
 <script>

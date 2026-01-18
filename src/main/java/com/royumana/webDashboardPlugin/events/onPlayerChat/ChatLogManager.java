@@ -31,4 +31,8 @@ public class ChatLogManager implements Listener {
             return new LinkedList<>(chatHistory);
         }
     }
+
+    public static void addLogs(String text) {
+        chatHistory.add(text);
+    }
 }
