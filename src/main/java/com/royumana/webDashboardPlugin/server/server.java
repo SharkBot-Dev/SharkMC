@@ -17,7 +17,7 @@ public class server extends RouterNanoHTTPD {
     private final JavaPlugin plugin;
 
     public server(JavaPlugin plugin) {
-        super("127.0.0.1", 8080);
+        super("0.0.0.0", 8080);
         this.plugin = plugin;
 
         addMappings();
