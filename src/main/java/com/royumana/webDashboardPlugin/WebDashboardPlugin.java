@@ -2,6 +2,7 @@ package com.royumana.webDashboardPlugin;
 
 import com.royumana.webDashboardPlugin.commands.commands_registers;
 import com.royumana.webDashboardPlugin.events.events_registers;
+import com.royumana.webDashboardPlugin.lib.Database;
 import fi.iki.elonen.NanoHTTPD;
 import org.bukkit.plugin.java.JavaPlugin;
 import com.royumana.webDashboardPlugin.server.server;
@@ -15,6 +16,8 @@ public final class WebDashboardPlugin extends JavaPlugin {
 
     @Override
     public void onEnable() {
+        Database db = new Database();
+
         try {
             new commands_registers();
             new events_registers(this);
