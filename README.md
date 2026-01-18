@@ -10,7 +10,7 @@ Minecraftの多機能プラグイン
 ・AFK
 
 # セットアップ方法
-/pluginsに、plugin.jarを導入する<br>
+/pluginsに、tagsから入手した、最新の.jarファイルを導入する<br>
 
 Windowsの場合<br>
 run.ps1を作成し、以下のように書き込む
