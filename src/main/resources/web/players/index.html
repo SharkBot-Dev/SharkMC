@@ -107,11 +107,16 @@
                 btn.innerText = "キック";
                 btn.onclick = () => kickPlayer(name);
 
+                const kill = document.createElement("button");
+                kill.innerText = "殺害";
+                kill.onclick = () => killPlayer(name);
+
                 const thunder = document.createElement("button");
                 thunder.innerText = "雷";
                 thunder.onclick = () => thunderPlayer(name);
 
                 tdAction.appendChild(btn);
+                tdAction.appendChild(kill);
                 tdAction.appendChild(thunder);
 
                 tr.appendChild(tdName);
@@ -156,6 +161,26 @@
         .then(r => {
             if (r.ok) {
                 alert("雷を落としました。");
+                loadPlayers();
+            } else {
+                alert("失敗しました");
+            }
+        });
+    }
+
+    function killPlayer(name) {
+        if (!confirm(`${name} を殺しますか？`)) return;
+
+        fetch("/api/player/kill", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({ player: name })
+        })
+        .then(r => {
+            if (r.ok) {
+                alert("殺しました。");
                 loadPlayers();
             } else {
                 alert("失敗しました");
