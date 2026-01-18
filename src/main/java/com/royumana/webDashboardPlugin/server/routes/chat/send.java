@@ -3,7 +3,7 @@ package com.royumana.webDashboardPlugin.server.routes.chat;
 import fi.iki.elonen.NanoHTTPD;
 import fi.iki.elonen.router.RouterNanoHTTPD;
 
-import java.util.List;
+import java.security.cert.Extension;
 import java.util.Map;
 
 import com.royumana.webDashboardPlugin.events.onPlayerChat.ChatLogManager;
@@ -26,6 +26,14 @@ public class send extends RouterNanoHTTPD.GeneralHandler  {
 
             if (message != null && !message.isEmpty()) {
                 JavaPlugin plugin = (JavaPlugin) Bukkit.getPluginManager().getPlugin("WebDashboardPlugin");
+                if (message.startsWith("/")) {
+                    Bukkit.getScheduler().runTask(plugin, () -> {
+                        try {
+                            Bukkit.dispatchCommand(Bukkit.getConsoleSender(), message.split("/")[1]);
+                        } catch (Exception ignored) {}
+                    });
+                    return newFixedLengthResponse(NanoHTTPD.Response.Status.OK, "text/plain", "OK");
+                }
                 Bukkit.getScheduler().runTask(plugin, () -> {
                     Bukkit.broadcastMessage("§b[Web管理画面] §f" + message);
                 });
