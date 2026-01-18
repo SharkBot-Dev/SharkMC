@@ -1,6 +1,8 @@
 package com.royumana.webDashboardPlugin;
 
 import com.royumana.webDashboardPlugin.commands.commands_registers;
+import com.royumana.webDashboardPlugin.commands.commands_registers;
+import com.royumana.webDashboardPlugin.events.events_registers;
 import fi.iki.elonen.NanoHTTPD;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -18,6 +20,7 @@ public final class WebDashboardPlugin extends JavaPlugin {
     public void onEnable() {
         try {
             new commands_registers();
+            new events_registers(this);
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
