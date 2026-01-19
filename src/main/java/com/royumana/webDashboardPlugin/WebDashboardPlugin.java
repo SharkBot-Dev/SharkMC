@@ -2,6 +2,8 @@ package com.royumana.webDashboardPlugin;
 
 import com.royumana.webDashboardPlugin.commands.commands_registers;
 import com.royumana.webDashboardPlugin.events.events_registers;
+import com.royumana.webDashboardPlugin.lib.Database;
+import com.royumana.webDashboardPlugin.lib.EconomyManager;
 import com.royumana.webDashboardPlugin.server.routes.chat.chat;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -14,6 +16,7 @@ public final class WebDashboardPlugin extends JavaPlugin {
 
     private static WebDashboardPlugin instance;
     private server webserver;
+    private EconomyManager economyManager;
 
     @Override
     public void onEnable() {
@@ -23,6 +26,9 @@ public final class WebDashboardPlugin extends JavaPlugin {
             getDataFolder().mkdirs();
         }
         saveDefaultConfig();
+
+        Database db = new Database();
+        this.economyManager = new EconomyManager(db);
 
         try {
             new commands_registers();
@@ -54,5 +60,9 @@ public final class WebDashboardPlugin extends JavaPlugin {
 
     public server getHttpServer() {
         return webserver;
+    }
+
+    public EconomyManager getEconomyManager() {
+        return economyManager;
     }
 }

@@ -18,6 +18,7 @@ public class sidebar extends RouterNanoHTTPD.GeneralHandler {
         html.append("<a href=\"/\">ホーム</a>");
         html.append("<a href=\"/chat\">チャット</a>");
         html.append("<a href=\"/players\">プレイヤー</a>");
+        html.append("<a href=\"/economy\">経済</a>");
 
         for (SidebarManager.MenuEntry entry : SidebarManager.getMenus()) {
             html.append(String.format("<a href=\"%s\">%s</a>", entry.url, entry.name));

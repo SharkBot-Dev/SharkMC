@@ -4,6 +4,10 @@ import com.royumana.webDashboardPlugin.lib.SidebarManager;
 import com.royumana.webDashboardPlugin.server.routes.chat.chat;
 import com.royumana.webDashboardPlugin.server.routes.chat.getChatLogs;
 import com.royumana.webDashboardPlugin.server.routes.chat.send;
+import com.royumana.webDashboardPlugin.server.routes.economy.createPlayer;
+import com.royumana.webDashboardPlugin.server.routes.economy.economy;
+import com.royumana.webDashboardPlugin.server.routes.economy.editBalance;
+import com.royumana.webDashboardPlugin.server.routes.economy.getEconomyPlayers;
 import com.royumana.webDashboardPlugin.server.routes.error404;
 import com.royumana.webDashboardPlugin.server.routes.index;
 
@@ -32,6 +36,7 @@ public class server extends RouterNanoHTTPD {
         addRoute("/", index.class);
         addRoute("/login", login.class);
         addRoute("/players", players.class);
+        addRoute("/api/offlinePlayers", offlinePlayers.class);
         addRoute("/api/players", getPlayers.class);
         addRoute("/api/player/kill", kill.class, plugin);
         addRoute("/api/kick", kick.class, plugin);
@@ -39,6 +44,10 @@ public class server extends RouterNanoHTTPD {
         addRoute("/chat", chat.class);
         addRoute("/api/logs/chat", getChatLogs.class);
         addRoute("/api/logs/chat/send", send.class);
+        addRoute("/economy", economy.class);
+        addRoute("/api/economy/players", getEconomyPlayers.class);
+        addRoute("/api/economy/createPlayer", createPlayer.class);
+        addRoute("/api/economy/editBalance", editBalance.class);
         addRoute("/sidebar.html", sidebar.class);
 
         List<Map<?, ?>> customRoutes = plugin.getConfig().getMapList("routes");

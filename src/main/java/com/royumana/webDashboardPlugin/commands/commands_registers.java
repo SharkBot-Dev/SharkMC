@@ -1,5 +1,6 @@
 package com.royumana.webDashboardPlugin.commands;
 
+import com.royumana.webDashboardPlugin.commands.economy.balance;
 import com.royumana.webDashboardPlugin.commands.moderation.echo;
 import com.royumana.webDashboardPlugin.commands.moderation.setnick;
 import com.royumana.webDashboardPlugin.commands.moderation.thunder;
@@ -20,6 +21,9 @@ public class commands_registers {
         new echo();
         new thunder();
         new setnick();
+
+        // 経済
+        new balance();
 
         getLogger().info("コマンドを登録しました。");
     }

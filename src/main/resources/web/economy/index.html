@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <title>経済設定</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, Helvetica, sans-serif;
+            background-color: #f4f6f8;
+        }
+
+        .sidebar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 220px;
+            height: 100vh;
+            background-color: #1e1e2f;
+            color: #ffffff;
+            padding-top: 20px;
+        }
+
+        .sidebar h2 {
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 18px;
+        }
+
+        .menu a {
+            display: block;
+            padding: 12px 20px;
+            color: #cfd3ff;
+            text-decoration: none;
+            font-size: 14px;
+        }
+
+        .menu a:hover {
+            background-color: #2a2a40;
+            color: #ffffff;
+        }
+
+        .content {
+            margin-left: 220px;
+            padding: 20px;
+        }
+
+        button {
+            margin-top: 10px;
+            padding: 10px 16px;
+            font-size: 14px;
+            background-color: #5865f2;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+
+<div class="sidebar" id="sidebar"></div>
+
+<div class="content">
+    <div id="players" class="page">
+        <div class="card">
+            <h3>経済を利用したことのあるプレイヤー</h3>
+
+            <button class="btn btn-add" onclick="createNewAccount()">+ 新規アカウント作成</button>
+            <button class="btn btn-primary" onclick="loadPlayers()">リロード</button>
+
+            <table id="playerTable">
+                <thead>
+                <tr>
+                    <th align="left">プレイヤー</th>
+                    <th align="right">所持金</th>
+                    <th align="center">操作</th>
+                </tr>
+                </thead>
+                <tbody>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+</body>
+
+<script>
+    fetch("/sidebar.html")
+      .then(r => r.text())
+      .then(html => { document.getElementById("sidebar").innerHTML = html; });
+
+    function loadPlayers() {
+        fetch("/api/economy/players")
+        .then(r => r.json())
+        .then(players => {
+            const tbody = document.querySelector("#playerTable tbody");
+            tbody.innerHTML = "";
+
+            players.forEach(p => {
+                const tr = document.createElement("tr");
+
+                const tdInfo = document.createElement("td");
+                tdInfo.innerHTML = `<strong>${p.name}</strong>: <span class="uuid-text">${p.uuid}</span>`;
+
+                const tdBalance = document.createElement("td");
+                tdBalance.align = "right";
+                tdBalance.innerText = `${p.balance.toLocaleString()} コイン`;
+
+                const tdAction = document.createElement("td");
+                tdAction.align = "center";
+                tdAction.innerHTML = `<button class="btn btn-primary" onclick="editBalance('${p.name}')">編集</button>`;
+
+                tr.appendChild(tdInfo);
+                tr.appendChild(tdBalance);
+                tr.appendChild(tdAction);
+                tbody.appendChild(tr);
+            });
+        })
+        .catch(err => alert("データの取得に失敗しました: " + err));
+    }
+
+    function createNewAccount() {
+        const name = prompt("作成したいプレイヤーの名前を入力してください:");
+        if (!name) return;
+
+        fetch("/api/economy/createPlayer", {
+            method: "POST",
+            body: JSON.stringify({ player: name }),
+            headers: { "Content-Type": "application/json" }
+        })
+        .then(async r => {
+            const text = await r.text();
+            if (r.ok) {
+                alert("作成成功: " + text);
+                loadPlayers(); // 再読み込み
+            } else {
+                alert("エラー: " + text);
+            }
+        });
+    }
+
+    function editBalance(name) {
+        const newAmount = prompt(`${name} の新しい所持金を入力してください:`);
+
+        if (newAmount === null || newAmount === "" || isNaN(newAmount)) return;
+
+        fetch("/api/economy/editBalance", {
+            method: "POST",
+            body: JSON.stringify({
+                player: name,
+                amount: parseFloat(newAmount)
+            }),
+            headers: { "Content-Type": "application/json" }
+        })
+        .then(async r => {
+            const text = await r.text();
+            if (r.ok) {
+                alert("更新完了: " + text);
+                loadPlayers();
+            } else {
+                alert("エラー: " + text);
+            }
+        })
+        .catch(err => alert("通信エラー: " + err));
+    }
+
+    // 初期表示
+    loadPlayers();
+</script>
+
+</html>
