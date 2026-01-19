@@ -17,11 +17,10 @@ public class getChatLogs extends RouterNanoHTTPD.GeneralHandler  {
 
         List<String> logs = ChatLogManager.getLogs();
 
-        // 簡易的にJSON配列を作成 (本来はGson等を使うのがベスト)
         String json = "[\"" + String.join("\",\"", logs) + "\"]";
 
         NanoHTTPD.Response res = newFixedLengthResponse(NanoHTTPD.Response.Status.OK, "application/json", json);
-        // CORS対策（ブラウザからの直接アクセスを許可する場合）
+
         res.addHeader("Access-Control-Allow-Origin", "*");
         return res;
     };

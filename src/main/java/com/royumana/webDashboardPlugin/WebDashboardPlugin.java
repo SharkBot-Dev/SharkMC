@@ -2,8 +2,8 @@ package com.royumana.webDashboardPlugin;
 
 import com.royumana.webDashboardPlugin.commands.commands_registers;
 import com.royumana.webDashboardPlugin.events.events_registers;
-import com.royumana.webDashboardPlugin.lib.Database;
-import fi.iki.elonen.NanoHTTPD;
+import com.royumana.webDashboardPlugin.server.routes.chat.chat;
+import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 import com.royumana.webDashboardPlugin.server.server;
 
@@ -12,11 +12,12 @@ import java.sql.SQLException;
 
 public final class WebDashboardPlugin extends JavaPlugin {
 
+    private static WebDashboardPlugin instance;
     private server webserver;
 
     @Override
     public void onEnable() {
-        Database db = new Database();
+        instance = this;
 
         try {
             new commands_registers();
@@ -26,16 +27,27 @@ public final class WebDashboardPlugin extends JavaPlugin {
         }
 
         webserver = new server(this);
-        try {
-            webserver.start(NanoHTTPD.SOCKET_READ_TIMEOUT, false);
+
+        Bukkit.getScheduler().runTaskLater(this, () -> {
+            try {
+                this.webserver.start();
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
             getLogger().info("Dashboard started on 0.0.0.0:8080");
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        }, 60L);
     }
 
     @Override
     public void onDisable() {
         if (webserver != null) webserver.stop();
+    }
+
+    public static WebDashboardPlugin getInstance() {
+        return instance;
+    }
+
+    public server getHttpServer() {
+        return webserver;
     }
 }

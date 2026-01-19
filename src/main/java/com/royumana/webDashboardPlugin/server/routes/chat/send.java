@@ -3,7 +3,6 @@ package com.royumana.webDashboardPlugin.server.routes.chat;
 import fi.iki.elonen.NanoHTTPD;
 import fi.iki.elonen.router.RouterNanoHTTPD;
 
-import java.security.cert.Extension;
 import java.util.Map;
 
 import com.royumana.webDashboardPlugin.events.onPlayerChat.ChatLogManager;
