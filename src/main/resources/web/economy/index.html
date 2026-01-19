@@ -133,7 +133,7 @@
         .then(async r => {
             const text = await r.text();
             if (r.ok) {
-                alert("作成成功: " + text);
+                // alert("作成成功: " + text);
                 loadPlayers(); // 再読み込み
             } else {
                 alert("エラー: " + text);
@@ -157,7 +157,7 @@
         .then(async r => {
             const text = await r.text();
             if (r.ok) {
-                alert("更新完了: " + text);
+                // alert("更新完了: " + text);
                 loadPlayers();
             } else {
                 alert("エラー: " + text);
