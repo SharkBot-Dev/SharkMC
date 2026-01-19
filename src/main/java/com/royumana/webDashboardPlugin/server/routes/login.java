@@ -4,15 +4,25 @@ import com.royumana.webDashboardPlugin.server.files;
 import fi.iki.elonen.NanoHTTPD;
 import fi.iki.elonen.router.RouterNanoHTTPD;
 
+import java.security.SecureRandom;
+import java.util.Base64;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.UUID;
 
 import static com.royumana.webDashboardPlugin.server.isAuth.sessionStore;
 import static com.royumana.webDashboardPlugin.server.isAuth.isLogined;
 import static fi.iki.elonen.NanoHTTPD.newFixedLengthResponse;
 
 public class login extends RouterNanoHTTPD.GeneralHandler {
+
+    private static final SecureRandom secureRandom = new SecureRandom();
+    private static final Base64.Encoder base64Encoder = Base64.getUrlEncoder().withoutPadding();
+
+    public static String generateSessionId() {
+        byte[] randomBytes = new byte[24];
+        secureRandom.nextBytes(randomBytes);
+        return base64Encoder.encodeToString(randomBytes);
+    }
 
     @Override
     public NanoHTTPD.Response get(RouterNanoHTTPD.UriResource uriResource, Map<String, String> urlParams, NanoHTTPD.IHTTPSession session) {
@@ -42,7 +52,7 @@ public class login extends RouterNanoHTTPD.GeneralHandler {
             if (expectedUser != null && expectedPass != null &&
                     expectedUser.equals(user) && expectedPass.equals(pass)) {
 
-                String sessionId = UUID.randomUUID().toString();
+                String sessionId = generateSessionId();
                 sessionStore.put(sessionId, user);
 
                 session.getCookies().set("SESSIONID", sessionId, 1);
