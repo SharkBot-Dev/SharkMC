@@ -1,5 +1,8 @@
 package com.royumana.webDashboardPlugin.lib;
 
+import org.bukkit.Bukkit;
+import org.bukkit.plugin.java.JavaPlugin;
+
 import java.io.File;
 import java.io.IOException;
 import java.sql.Connection;
@@ -11,7 +14,8 @@ public class Database {
     private final File dataFile;
 
     public Database() {
-        this.dataFile = new File("web_dashboard", "database.db");
+        JavaPlugin plugin = (JavaPlugin) Bukkit.getPluginManager().getPlugin("WebDashboardPlugin");
+        this.dataFile = new File(plugin.getDataFolder(), "database.db");
     }
 
     public Connection getConnection() throws SQLException {

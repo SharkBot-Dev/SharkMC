@@ -41,11 +41,30 @@ public class server extends RouterNanoHTTPD {
         addRoute("/api/logs/chat/send", send.class);
         addRoute("/sidebar.html", sidebar.class);
 
+        List<Map<?, ?>> customRoutes = plugin.getConfig().getMapList("routes");
+
+        for (Map<?, ?> entry : customRoutes) {
+            String path = (String) entry.get("path");
+            String className = (String) entry.get("class");
+
+            try {
+                Class<?> clazz = Class.forName(className);
+
+                addRoute(path, (Class<?>) clazz);
+
+                plugin.getLogger().info("Route registered: " + path + " -> " + className);
+            } catch (ClassNotFoundException e) {
+                plugin.getLogger().severe("Could not find route class: " + className);
+            } catch (Exception e) {
+                plugin.getLogger().severe("Error registering route " + path + ": " + e.getMessage());
+            }
+        }
+
         setNotFoundHandler(error404.class);
     }
 
     public void addRouteExternal(String url, Class<?> handler) {
         addRoute(url, handler);
-        getLogger().info(url + " というルートを追加しました。");
+        plugin.getLogger().info("Route registered: " + url);
     }
 }

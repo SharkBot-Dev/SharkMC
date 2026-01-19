@@ -19,6 +19,11 @@ public final class WebDashboardPlugin extends JavaPlugin {
     public void onEnable() {
         instance = this;
 
+        if (!getDataFolder().exists()) {
+            getDataFolder().mkdirs();
+        }
+        saveDefaultConfig();
+
         try {
             new commands_registers();
             new events_registers(this);
