@@ -55,6 +55,22 @@
             border-radius: 4px;
             cursor: pointer;
         }
+
+        #playerTable {
+            width: 100%;
+            max-width: 800px;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        #playerTable th, #playerTable td {
+            padding: 12px 15px;
+            border-bottom: 1px solid #ddd;
+        }
+
+        #playerTable th:nth-child(1) { width: 40%; }
+        #playerTable th:nth-child(2) { width: 30%; }
+        #playerTable th:nth-child(3) { width: 30%; }
     </style>
 </head>
 <body>
@@ -166,7 +182,6 @@
         .catch(err => alert("通信エラー: " + err));
     }
 
-    // 初期表示
     loadPlayers();
 </script>
 

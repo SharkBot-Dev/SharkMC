@@ -18,7 +18,6 @@ import fi.iki.elonen.router.RouterNanoHTTPD;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.*;
-import static org.bukkit.Bukkit.getLogger;
 
 public class server extends RouterNanoHTTPD {
 

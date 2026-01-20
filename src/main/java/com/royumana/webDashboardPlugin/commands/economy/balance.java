@@ -14,7 +14,7 @@ import org.jetbrains.annotations.NotNull;
 
 public class balance {
     public balance() {
-        new register_permission().registerPermission("webDashboardPlugin.economy.balance", "現在残高を取得できます。", PermissionDefault.OP);
+        new register_permission().registerPermission("webDashboardPlugin.economy.balance", "現在残高を取得できます。", PermissionDefault.NOT_OP);
 
         new register_command().registerCommand("balance", new Command("balance") {
             {

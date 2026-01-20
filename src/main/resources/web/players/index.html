@@ -55,6 +55,52 @@
             border-radius: 4px;
             cursor: pointer;
         }
+
+        #playerTable {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            background-color: #fff;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        }
+
+        #playerTable th {
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-bottom: 2px solid #edf0f2;
+            color: #4b5563;
+            font-size: 13px;
+            text-transform: uppercase;
+        }
+
+        #playerTable td {
+            padding: 12px 15px;
+            border-bottom: 1px solid #edf0f2;
+            vertical-align: middle;
+        }
+
+        #playerTable td:first-child {
+            font-weight: bold;
+            color: #1e1e2f;
+        }
+
+        #playerTable button {
+            margin-top: 0;
+            margin-left: 8px;
+            padding: 6px 12px;
+        }
+
+        .btn {
+            transition: background 0.2s;
+        }
+
+        .btn-kick { background-color: #e67e22; }
+        .btn-kill { background-color: #e74c3c; }
+        .btn-thunder { background-color: #f1c40f; color: #000; }
+
+        .btn-kick:hover, .btn-kill:hover { opacity: 0.8; }
     </style>
 </head>
 <body>
@@ -110,14 +156,17 @@
 
                 const btn = document.createElement("button");
                 btn.innerText = "キック";
+                btn.className = "btn-kick";
                 btn.onclick = () => kickPlayer(name);
 
                 const kill = document.createElement("button");
                 kill.innerText = "殺害";
+                kill.className = "btn-kill";
                 kill.onclick = () => killPlayer(name);
 
                 const thunder = document.createElement("button");
                 thunder.innerText = "雷";
+                thunder.className = "btn-thunder";
                 thunder.onclick = () => thunderPlayer(name);
 
                 tdAction.appendChild(btn);
