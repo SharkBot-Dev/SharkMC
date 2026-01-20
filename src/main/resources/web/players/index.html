@@ -4,6 +4,14 @@
     <meta charset="UTF-8">
     <title>プラグインダッシュボード</title>
     <style>
+        :root {
+            --sidebar-width: 220px;
+            --primary-color: #5865f2;
+            --bg-color: #f4f6f8;
+            --sidebar-bg: #1e1e2f;
+            --text-dark: #333;
+        }
+
         body {
             margin: 0;
             font-family: Arial, Helvetica, sans-serif;
@@ -43,6 +51,90 @@
         .content {
             margin-left: 220px;
             padding: 20px;
+        }
+
+        .header-bar {
+            position: fixed;
+            top: 0;
+            left: var(--sidebar-width);
+            right: 0;
+            height: 70px;
+            background-color: #ffffff;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 30px;
+            z-index: 1000;
+        }
+
+        .header-bar h1 {
+            font-size: 20px;
+            margin: 0;
+        }
+
+        .toggle-container {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 14px;
+            font-weight: bold;
+        }
+
+        .switch {
+            position: relative;
+            display: inline-block;
+            width: 50px;
+            height: 26px;
+        }
+
+        .switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #ccc;
+            transition: .4s;
+            border-radius: 34px;
+        }
+
+        .sidebar h2 {
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 18px;
+        }
+
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 18px;
+            width: 18px;
+            left: 4px;
+            bottom: 4px;
+            background-color: white;
+            transition: .4s;
+            border-radius: 50%;
+        }
+
+        .menu a {
+            display: block;
+            padding: 12px 20px;
+            color: #cfd3ff;
+            text-decoration: none;
+            font-size: 14px;
+        }
+
+        .menu a:hover {
+            background-color: #2a2a40;
+            color: #ffffff;
         }
 
         button {

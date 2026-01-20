@@ -12,6 +12,8 @@ import com.royumana.webDashboardPlugin.server.routes.error404;
 import com.royumana.webDashboardPlugin.server.routes.index;
 
 import com.royumana.webDashboardPlugin.server.routes.login;
+import com.royumana.webDashboardPlugin.server.routes.modules.enabled;
+import com.royumana.webDashboardPlugin.server.routes.modules.toggle;
 import com.royumana.webDashboardPlugin.server.routes.players.*;
 import com.royumana.webDashboardPlugin.server.routes.sidebar;
 import fi.iki.elonen.router.RouterNanoHTTPD;
@@ -34,6 +36,8 @@ public class server extends RouterNanoHTTPD {
     public void addMappings() {
         addRoute("/", index.class);
         addRoute("/login", login.class);
+        addRoute("/api/module/toggle", toggle.class);
+        addRoute("/api/module/enabled", enabled.class);
         addRoute("/players", players.class);
         addRoute("/api/offlinePlayers", offlinePlayers.class);
         addRoute("/api/players", getPlayers.class);

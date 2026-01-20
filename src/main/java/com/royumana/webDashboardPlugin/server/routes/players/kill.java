@@ -27,7 +27,7 @@ public class kill extends RouterNanoHTTPD.GeneralHandler {
         try {
             session.parseBody(files);
         } catch (Exception e) {
-            return newFixedLengthResponse(NanoHTTPD.Response.Status.INTERNAL_ERROR, "text/plain", e.getMessage());
+            return newFixedLengthResponse(NanoHTTPD.Response.Status.INTERNAL_ERROR, "text/plain", "Internal Error");
         }
 
         String body = files.get("postData");

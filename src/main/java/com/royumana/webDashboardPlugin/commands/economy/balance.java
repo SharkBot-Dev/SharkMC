@@ -1,6 +1,7 @@
 package com.royumana.webDashboardPlugin.commands.economy;
 
 import com.royumana.webDashboardPlugin.WebDashboardPlugin;
+import com.royumana.webDashboardPlugin.lib.ModuleManager;
 import com.royumana.webDashboardPlugin.lib.register_command;
 import com.royumana.webDashboardPlugin.lib.register_permission;
 import org.bukkit.Bukkit;
@@ -14,7 +15,7 @@ import org.jetbrains.annotations.NotNull;
 
 public class balance {
     public balance() {
-        new register_permission().registerPermission("webDashboardPlugin.economy.balance", "現在残高を取得できます。", PermissionDefault.NOT_OP);
+        new register_permission().registerPermission("webDashboardPlugin.economy.balance", "現在残高を取得できます。", PermissionDefault.OP);
 
         new register_command().registerCommand("balance", new Command("balance") {
             {
@@ -26,6 +27,13 @@ public class balance {
             @Override
             public boolean execute(@NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] args) {
                 WebDashboardPlugin plugin = (WebDashboardPlugin) Bukkit.getPluginManager().getPlugin("WebDashboardPlugin");
+
+                ModuleManager moduleManager = plugin.getModuleManager();
+                boolean isEnabled = moduleManager.isEnabled("economy");
+                if (!isEnabled) {
+                    sender.sendMessage(ChatColor.RED + "経済モジュールが無効化されています。");
+                    return true;
+                }
 
                 if (args.length == 0) {
                     if (!(sender instanceof Player)) {

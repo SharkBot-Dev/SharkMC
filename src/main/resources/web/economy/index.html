@@ -2,8 +2,17 @@
 <html lang="ja">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>経済設定</title>
     <style>
+        :root {
+            --sidebar-width: 220px;
+            --primary-color: #5865f2;
+            --bg-color: #f4f6f8;
+            --sidebar-bg: #1e1e2f;
+            --text-dark: #333;
+        }
+
         body {
             margin: 0;
             font-family: Arial, Helvetica, sans-serif;
@@ -41,71 +50,193 @@
         }
 
         .content {
-            margin-left: 220px;
-            padding: 20px;
+            margin-left: var(--sidebar-width);
+            padding: 100px 30px 30px;
         }
 
-        button {
-            margin-top: 10px;
-            padding: 10px 16px;
+        .header-bar {
+            position: fixed;
+            top: 0;
+            left: var(--sidebar-width);
+            right: 0;
+            height: 70px;
+            background-color: #ffffff;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 30px;
+            z-index: 1000;
+        }
+
+        .header-bar h1 {
+            font-size: 20px;
+            margin: 0;
+        }
+
+        .toggle-container {
+            display: flex;
+            align-items: center;
+            gap: 10px;
             font-size: 14px;
-            background-color: #5865f2;
-            color: #fff;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
+            font-weight: bold;
         }
 
-        #playerTable {
+        .switch {
+            position: relative;
+            display: inline-block;
+            width: 50px;
+            height: 26px;
+        }
+
+        .switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #ccc;
+            transition: .4s;
+            border-radius: 34px;
+        }
+
+        .sidebar h2 {
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 18px;
+        }
+
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 18px;
+            width: 18px;
+            left: 4px;
+            bottom: 4px;
+            background-color: white;
+            transition: .4s;
+            border-radius: 50%;
+        }
+
+        .menu a {
+            display: block;
+            padding: 12px 20px;
+            color: #cfd3ff;
+            text-decoration: none;
+            font-size: 14px;
+        }
+
+        .menu a:hover {
+            background-color: #2a2a40;
+            color: #ffffff;
+        }
+
+        input:checked + .slider {
+            background-color: #4bd865;
+        }
+
+        input:checked + .slider:before {
+            transform: translateX(24px);
+        }
+
+        .card {
+            background: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+
+        table {
             width: 100%;
-            max-width: 800px;
             border-collapse: collapse;
             margin-top: 20px;
         }
 
-        #playerTable th, #playerTable td {
-            padding: 12px 15px;
-            border-bottom: 1px solid #ddd;
+        th, td {
+            padding: 15px;
+            text-align: left;
+            border-bottom: 1px solid #eee;
         }
 
-        #playerTable th:nth-child(1) { width: 40%; }
-        #playerTable th:nth-child(2) { width: 30%; }
-        #playerTable th:nth-child(3) { width: 30%; }
+        th {
+            background-color: #fafafa;
+            font-size: 13px;
+            color: #666;
+            text-transform: uppercase;
+        }
+
+        .btn {
+            padding: 8px 16px;
+            border-radius: 4px;
+            border: none;
+            cursor: pointer;
+            font-weight: 500;
+            transition: opacity 0.2s;
+            margin-right: 5px;
+        }
+
+        .btn:hover { opacity: 0.8; }
+        .btn-add { background-color: var(--primary-color); color: white; }
+        .btn-reload { background-color: #6c757d; color: white; }
+        .btn-edit { background-color: #f39c12; color: white; font-size: 12px; }
+
     </style>
 </head>
 <body>
 
-<div class="sidebar" id="sidebar"></div>
+<div class="sidebar" id="sidebar">
+    </div>
+
+<header class="header-bar">
+    <h1>経済モジュール設定</h1>
+    <div class="toggle-container">
+        <span>モジュール有効化</span>
+        <label class="switch">
+            <input type="checkbox" id="isModuleEnabled">
+            <span class="slider"></span>
+        </label>
+    </div>
+</header>
 
 <div class="content">
     <div id="players" class="page">
         <div class="card">
-            <h3>経済を利用したことのあるプレイヤー</h3>
+            <h3>登録プレイヤー一覧</h3>
 
-            <button class="btn btn-add" onclick="createNewAccount()">+ 新規アカウント作成</button>
-            <button class="btn btn-primary" onclick="loadPlayers()">リロード</button>
+            <div style="margin-bottom: 20px;">
+                <button class="btn btn-add" onclick="createNewAccount()">+ 新規アカウント作成</button>
+                <button class="btn btn-reload" onclick="loadPlayers()">リロード</button>
+            </div>
 
             <table id="playerTable">
                 <thead>
-                <tr>
-                    <th align="left">プレイヤー</th>
-                    <th align="right">所持金</th>
-                    <th align="center">操作</th>
-                </tr>
+                    <tr>
+                        <th>プレイヤー名</th>
+                        <th style="text-align: right;">所持金</th>
+                        <th style="text-align: center;">操作</th>
+                    </tr>
                 </thead>
                 <tbody>
-                </tbody>
+                    </tbody>
             </table>
         </div>
     </div>
 </div>
 
-</body>
-
 <script>
+    const CURRENT_MODULE = "economy";
+
     fetch("/sidebar.html")
-      .then(r => r.text())
-      .then(html => { document.getElementById("sidebar").innerHTML = html; });
+        .then(r => r.text())
+        .then(html => { document.getElementById("sidebar").innerHTML = html; })
+        .catch(e => console.error("Sidebar load failed"));
 
     function loadPlayers() {
         fetch("/api/economy/players")
@@ -116,25 +247,17 @@
 
             players.forEach(p => {
                 const tr = document.createElement("tr");
-
-                const tdInfo = document.createElement("td");
-                tdInfo.innerHTML = `<strong>${p.name}</strong>`;
-
-                const tdBalance = document.createElement("td");
-                tdBalance.align = "right";
-                tdBalance.innerText = `${p.balance.toLocaleString()} コイン`;
-
-                const tdAction = document.createElement("td");
-                tdAction.align = "center";
-                tdAction.innerHTML = `<button class="btn btn-primary" onclick="editBalance('${p.name}')">編集</button>`;
-
-                tr.appendChild(tdInfo);
-                tr.appendChild(tdBalance);
-                tr.appendChild(tdAction);
+                tr.innerHTML = `
+                    <td><strong>${p.name}</strong></td>
+                    <td style="text-align: right;">${p.balance.toLocaleString()} <span style="font-size:12px; color:#888;">コイン</span></td>
+                    <td style="text-align: center;">
+                        <button class="btn btn-edit" onclick="editBalance('${p.name}')">編集</button>
+                    </td>
+                `;
                 tbody.appendChild(tr);
             });
         })
-        .catch(err => alert("データの取得に失敗しました: " + err));
+        .catch(err => console.error("データの取得に失敗しました:", err));
     }
 
     function createNewAccount() {
@@ -147,19 +270,13 @@
             headers: { "Content-Type": "application/json" }
         })
         .then(async r => {
-            const text = await r.text();
-            if (r.ok) {
-                // alert("作成成功: " + text);
-                loadPlayers(); // 再読み込み
-            } else {
-                alert("エラー: " + text);
-            }
+            if (r.ok) loadPlayers();
+            else alert("エラー: " + await r.text());
         });
     }
 
     function editBalance(name) {
         const newAmount = prompt(`${name} の新しい所持金を入力してください:`);
-
         if (newAmount === null || newAmount === "" || isNaN(newAmount)) return;
 
         fetch("/api/economy/editBalance", {
@@ -171,18 +288,51 @@
             headers: { "Content-Type": "application/json" }
         })
         .then(async r => {
-            const text = await r.text();
-            if (r.ok) {
-                // alert("更新完了: " + text);
-                loadPlayers();
-            } else {
-                alert("エラー: " + text);
-            }
+            if (r.ok) loadPlayers();
+            else alert("エラー: " + await r.text());
         })
         .catch(err => alert("通信エラー: " + err));
     }
 
     loadPlayers();
+
+    function updateToggleState() {
+        const moduleName = "economy";
+        fetch(`/api/module/enabled?name=${moduleName}`)
+            .then(r => r.json())
+            .then(data => {
+                document.getElementById("isModuleEnabled").checked = data.enabled;
+            });
+    }
+
+    updateToggleState();
+
+    document.getElementById("isModuleEnabled").addEventListener("change", function(e) {
+        const isChecked = e.target.checked;
+
+        fetch("/api/module/toggle", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+                module: CURRENT_MODULE,
+                enabled: isChecked
+            })
+        })
+        .then(async r => {
+            if (r.ok) {
+                console.log(`${CURRENT_MODULE} status updated to: ${isChecked}`);
+            } else {
+                const errText = await r.text();
+                alert("設定の保存に失敗しました: " + errText);
+                e.target.checked = !isChecked;
+            }
+        })
+        .catch(err => {
+            alert("通信エラーが発生しました");
+            e.target.checked = !isChecked;
+        });
+    });
 </script>
 
+</body>
 </html>
