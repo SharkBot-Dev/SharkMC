@@ -66,8 +66,9 @@ public class EconomyManager {
         Map<UUID, Double> players = new HashMap<>();
 
         try (Connection conn = db.getConnection();
-             PreparedStatement pstmt = conn.prepareStatement(sql)) {
-            ResultSet rs = pstmt.executeQuery();
+             PreparedStatement pstmt = conn.prepareStatement(sql);
+             ResultSet rs = pstmt.executeQuery()) {
+
             while (rs.next()) {
                 UUID uuid = UUID.fromString(rs.getString("uuid"));
                 double balance = rs.getDouble("balance");
