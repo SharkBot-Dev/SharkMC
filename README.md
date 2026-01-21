@@ -23,8 +23,8 @@ java -jar サーバーのメインファイル.jar
 Linuxの場合<br>
 run.shを作成し、以下のように書き込む
 ```
-export USERNAME = "ユーザー名"
-export PASSWORD = "パスワード"
+export USERNAME="ユーザー名"
+export PASSWORD="パスワード"
 java -jar サーバーのメインファイル.jar
 ```
 
