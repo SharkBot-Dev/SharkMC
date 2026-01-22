@@ -9,7 +9,6 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 
 public class Database {
-    private Connection connection;
     private final File dataFile;
 
     public Database() {
@@ -18,16 +17,12 @@ public class Database {
     }
 
     public Connection getConnection() throws SQLException {
-        if (connection != null && !connection.isClosed()) {
-            return connection;
-        }
-
         if (!dataFile.getParentFile().exists()) {
             dataFile.getParentFile().mkdirs();
         }
 
-        String url = "jdbc:sqlite:" + dataFile.getAbsolutePath();
-        connection = DriverManager.getConnection(url);
-        return connection;
+        String url = "jdbc:sqlite:" + dataFile.getAbsolutePath()
+                   + "?busy_timeout=3000";
+        return DriverManager.getConnection(url);
     }
 }
